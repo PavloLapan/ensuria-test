@@ -1,17 +1,16 @@
-import * as axios from "axios";
+import {DatasetList} from "../Types/DatasetList.ts";
 
-
-export const fetchDatasetList = async (): Promise<any> => {
-    const response = await axios.get(
-        'https://parseapi.back4app.com/classes/ListOfNamesDataset_AllNames?limit=1000',
+export const fetchDatasetList = async (): Promise<DatasetList> => {
+    const response = await fetch(
+        'https://parseapi.back4app.com/classes/Listofnames_Complete_List_Names?count=1&limit=1000',
         {
             headers: {
-
-            },
+                'X-Parse-Application-Id': 'QEcIPpq3HwAAumfH3hHWwmqEhm1u48pxkix06stp', // This is your app's application id
+                'X-Parse-REST-API-Key': 'yt24YQigRhLhk1zq2WO1vc72FUHfkGCvkgF2YL9W', // This is your app's REST API key
+            }
         }
     );
-    return response.data.results.map((item: any) => ({ // todo - debug response item
-        label: item.name,
-        value: item.objectId,
-    }));
+
+    const data = await response.json()
+    return data.results
 };

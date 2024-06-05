@@ -1,6 +1,7 @@
+import {DatasetList} from "../Types/DatasetList.ts";
 
 export type DatasetListState = {
-    data: [];
+    data: [] | DatasetList;
     loading: boolean;
     error?: string;
 };

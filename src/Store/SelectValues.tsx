@@ -1,8 +1,8 @@
 import {DatasetListStore} from "./SelectValues.types.ts";
 import {create} from "zustand";
 import {createJSONStorage, devtools, persist} from "zustand/middleware";
-import {immer} from "zustand/middleware/immer";
 import {fetchDatasetList} from "../Api/datasetList.ts";
+import { immer } from 'zustand/middleware/immer';
 
 
 export const useSelectOptionsStore =
@@ -18,7 +18,7 @@ export const useSelectOptionsStore =
                         set({ loading: true });
                         try {
                             const response = await fetchDatasetList();
-                            set({ data: response.data });
+                            set({ data: response });
                         } catch (error) {
                             set({ error: (error as Error).message });
                         } finally {
