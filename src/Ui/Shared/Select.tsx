@@ -9,6 +9,9 @@ type SelectProps = {
   className?: string
 }
 
+const ITEM_HEIGHT = 35;
+const CONTAINER_HEIGHT = 200;
+
 export const Select: FC<SelectProps> = ({ options, value, onChange, className }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
@@ -23,13 +26,15 @@ export const Select: FC<SelectProps> = ({ options, value, onChange, className })
     setIsOpen(true);
   };
 
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => { // added timeout for correct behaviour of blur effect ( have bug there before)
+  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     blurTimeout.current = window.setTimeout(() => {
       if (selectRef.current && !selectRef.current.contains(e.relatedTarget)) {
         setIsOpen(false);
       }
     }, 100);
   };
+
+  //can decompose below
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     switch (e.key) {
@@ -80,6 +85,7 @@ export const Select: FC<SelectProps> = ({ options, value, onChange, className })
       {options[index].Name}
     </div>
   );
+  // can decompose above
 
   return (
     <div
@@ -95,9 +101,9 @@ export const Select: FC<SelectProps> = ({ options, value, onChange, className })
       </div>
       {isOpen && (
         <List
-          height={200}
+          height={CONTAINER_HEIGHT}
           itemCount={options.length}
-          itemSize={35}
+          itemSize={ITEM_HEIGHT}
           width={300}
           className='listbox'
           ref={listRef}
@@ -108,5 +114,3 @@ export const Select: FC<SelectProps> = ({ options, value, onChange, className })
     </div>
   );
 }
-
-

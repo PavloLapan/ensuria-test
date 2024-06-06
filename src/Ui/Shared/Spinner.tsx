@@ -1,4 +1,3 @@
-
 import styles from './Spinner.module.scss';
 
 export const Spinner = () => {
@@ -9,4 +8,3 @@ export const Spinner = () => {
         </div>
     );
 };
-
