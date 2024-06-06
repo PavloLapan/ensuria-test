@@ -1,6 +1,6 @@
 import {DatasetList} from "../Types/DatasetList.ts";
 
-export const fetchDatasetList = async (): Promise<DatasetList> => {
+export const fetchDatasetList = async (): Promise< [] | DatasetList[] | undefined> => {
     const response = await fetch(
         'https://parseapi.back4app.com/classes/Listofnames_Complete_List_Names?count=1&limit=1000',
         {

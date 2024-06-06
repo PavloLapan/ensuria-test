@@ -1,32 +1,112 @@
-import {ChangeEventHandler, FC} from "react";
-import './Select.scss'
+import React, { ChangeEventHandler, FC, useRef, useState } from "react";
+import { DatasetList } from "../../Types/DatasetList.ts";
+import { FixedSizeList as List } from 'react-window';
 
 type SelectProps = {
-    onChange: ChangeEventHandler<HTMLSelectElement>,
-    options: [
-        {
-            value: string,
-            label: string
-        }
-    ], // sometimes we need to define select Options as array of objects, I`ll see later how API will give me data
-    placeholder?: string,
-    value: string | undefined,
-    className?: string
+  onChange: ChangeEventHandler<HTMLSelectElement>,
+  options: [] | DatasetList[],
+  value: string | undefined,
+  className?: string
 }
-export const Select: FC<SelectProps> = ({options, value, onChange, placeholder, className}) => {
 
-    return (
-        <select
-            value={value || ''}
-            onChange={onChange}
-            placeholder={placeholder || 'Select an option'}
-            className={className}
+export const Select: FC<SelectProps> = ({ options, value, onChange, className }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
+  const selectRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<List>(null);
+  const blurTimeout = useRef<number | undefined>(undefined);
+
+  const handleToggle = () => setIsOpen(prev => !prev);
+
+  const handleFocus = () => {
+    clearTimeout(blurTimeout.current);
+    setIsOpen(true);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => { // added timeout for correct behaviour of blur effect ( have bug there before)
+    blurTimeout.current = window.setTimeout(() => {
+      if (selectRef.current && !selectRef.current.contains(e.relatedTarget)) {
+        setIsOpen(false);
+      }
+    }, 100);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    switch (e.key) {
+      case 'ArrowDown':
+        setHighlightedIndex(prev => {
+          const newIndex = prev === null ? 0 : Math.min(prev + 1, options.length - 1);
+          if (listRef.current) {
+            listRef.current.scrollToItem(newIndex);
+          }
+          return newIndex;
+        });
+        break;
+      case 'ArrowUp':
+        setHighlightedIndex(prev => {
+          const newIndex = prev === null ? options.length - 1 : Math.max(prev - 1, 0);
+          if (listRef.current) {
+            listRef.current.scrollToItem(newIndex);
+          }
+          return newIndex;
+        });
+        break;
+      case 'Enter':
+        if (highlightedIndex !== null) {
+          onChange({ target: { value: options[highlightedIndex].Name } } as React.ChangeEvent<HTMLSelectElement>);
+          setIsOpen(false);
+        }
+        break;
+      case 'Escape':
+        setIsOpen(false);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleOptionClick = (index: number) => {
+    onChange({ target: { value: options[index].Name } } as React.ChangeEvent<HTMLSelectElement>);
+    setIsOpen(false);
+  };
+
+  const Row = ({ index, style }: { index: number, style: React.CSSProperties }) => (
+    <div
+      style={style}
+      className={`option ${highlightedIndex === index ? 'highlighted' : ''}`}
+      onMouseEnter={() => setHighlightedIndex(index)}
+      onMouseDown={() => handleOptionClick(index)}
+    >
+      {options[index].Name}
+    </div>
+  );
+
+  return (
+    <div
+      className={`custom-select ${className}`}
+      tabIndex={0}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+      ref={selectRef}
+    >
+      <div className="selected-value" onClick={handleToggle}>
+        {value || 'Select...'}
+      </div>
+      {isOpen && (
+        <List
+          height={200}
+          itemCount={options.length}
+          itemSize={35}
+          width={300}
+          className='listbox'
+          ref={listRef}
         >
-            {options?.map(option => (
-                <option key={option.value} value={option.value}>
-                    {option.label}
-                </option>
-            ))}
-        </select>
-    )
+          {Row}
+        </List>
+      )}
+    </div>
+  );
 }
+
+

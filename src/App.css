@@ -1,42 +1,128 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
 }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+    a:nth-of-type(2) .logo {
+        animation: logo-spin infinite 20s linear;
+    }
 }
 
 .card {
-  padding: 2em;
+    padding: 2em;
 }
 
 .read-the-docs {
-  color: #888;
+    color: #888;
+}
+
+.width-xl {
+    width: 250px;
+    max-width: 250px;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.h-lg {
+    height: 40px;
+    max-height: 40px;
+}
+
+.p-1 {
+    padding: 1rem;
+}
+
+.truncate {
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    font-size: 1em;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.listbox::-webkit-scrollbar {
+    width: 12px; /* Adjust width of the scrollbar */
+}
+
+.listbox::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.listbox::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 6px;
+    border: 3px solid #f1f1f1; /* Adds padding around the thumb */
+}
+
+.custom-select::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.custom-select::-webkit-scrollbar-corner {
+    background: transparent; /* Removes the corner when both scrollbars are present */
+}
+
+
+.custom-select {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.selected-value {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.option {
+    padding: 10px;
+    cursor: pointer;
+    background-color: white;
+}
+
+.option.highlighted {
+    background-color: #bde4ff;
+}
+
+.custom-select:focus {
+    outline: none;
+}
+
+.listbox {
+    position: absolute!important;
+    width: 250px!important;
+    margin-top: 5px;
+    max-height: 200px;
+    background-color: white;
+    overflow-y: auto;
+    z-index: 444;
+    overflow-x: hidden!important;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
